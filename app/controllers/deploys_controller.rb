@@ -1,7 +1,8 @@
 class DeploysController < ApplicationController
-  
+
+  protect_from_forgery :except => [ :create ]
   skip_before_filter :authenticate_user!, :only => :create
-  
+
   def create
     @app = App.find_by_api_key!(params[:api_key])
     @deploy = @app.deploys.create!({
@@ -12,5 +13,5 @@ class DeploysController < ApplicationController
     })
     render :xml => @deploy
   end
-  
+
 end
