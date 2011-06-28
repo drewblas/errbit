@@ -84,7 +84,10 @@ class Notice
   protected
 
   def should_notify?
-    puts "Should notify? #{err.app.notify_on_errs? && Errbit::Config.email_at_notices.include?(err.notices.count) && err.app.watchers.any?}"
+    puts "notify_on_errs: #{err.app.notify_on_errs?}"
+    puts "email_at_notices: #{Errbit::Config.email_at_notices.to_json}"
+    puts "notices_count: #{err.notices.count}"
+    puts "watchers: #{err.app.watchers.count}"
     err.app.notify_on_errs? && Errbit::Config.email_at_notices.include?(err.notices.count) && err.app.watchers.any?
   end
 
