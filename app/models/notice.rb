@@ -55,7 +55,7 @@ class Notice
     agent_string = env_vars['HTTP_USER_AGENT']
     agent_string.blank? ? nil : UserAgent.parse(agent_string)
   end
-  
+
   def request
     read_attribute(:request) || {}
   end
@@ -73,6 +73,7 @@ class Notice
   end
 
   def deliver_notification
+    puts "Deliver notification!"
     Mailer.err_notification(self).deliver
   end
 
@@ -83,6 +84,7 @@ class Notice
   protected
 
   def should_notify?
+    puts "Should notify? #{err.app.notify_on_errs? && Errbit::Config.email_at_notices.include?(err.notices.count) && err.app.watchers.any?}"
     err.app.notify_on_errs? && Errbit::Config.email_at_notices.include?(err.notices.count) && err.app.watchers.any?
   end
 
