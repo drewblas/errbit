@@ -5,6 +5,7 @@ class Mailer < ActionMailer::Base
     @notice   = notice
     @app  = notice.err.app
 
+    puts "To: #{@app.watchers.map(&:address).join(", ")}"
     mail({
       :to       => @app.watchers.map(&:address),
       :subject  => "[#{@app.name}][#{@notice.err.environment}] #{@notice.err.message}"
