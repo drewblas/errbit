@@ -1,4 +1,5 @@
 class User
+  PER_PAGE = 30
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -8,8 +9,10 @@ class User
 
   field :name
   field :admin, :type => Boolean, :default => false
-    
+  field :per_page, :type => Fixnum, :default => PER_PAGE
+
   after_destroy :destroy_watchers
+  before_save :ensure_authentication_token
   
   validates_presence_of :name
   
@@ -19,6 +22,10 @@ class User
   # referencing embedded documents
   def watchers
     App.all.map(&:watchers).flatten.select {|w| w.user_id.to_s == id.to_s}
+  end
+
+  def per_page
+    self[:per_page] || PER_PAGE
   end
   
   def apps
